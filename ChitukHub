@@ -1741,7 +1741,6 @@ function t2.value40()
         t2.value35:Disconnect()
         t2.value35 = nil
     end
-    print("stop aiming")
 end
 function t2.value41(p10)
     if not p10 then return end
@@ -1776,141 +1775,49 @@ local function v11(p11)
         t2.value40()
     end
 end
-local v12 = loadstring(game:HttpGet("https://raw.githubusercontent.com/randomforsakenscripter/UILibrary/refs/heads/main/Gemini/V1.0"))()
-if not v12 then
-    print("awww no gui poor u")
-    return
-end
-t1.value1 = UDim2
-t1.value2 = v12.SetToggleButton
-t1.value3 = t1.value1.new(0, 50, 0, 50)
-t1.value4 = UDim2.new(0.85, 0, 0.8, 0)
-t1.value2(v12, {
-	Text = "GAB",
-	Size = t1.value3,
-	Position = t1.value4
-})
-v12:SetTitle("Auto Block V1 By RFS")
-v12:AddLabelBox({
-	Name = "ATTENTION!",
-	Description = "This script is still in working process, some things may not working for a while until it updated"
-})
-t1.value5 = v12.AddToggle
-function t1.value6(p12)
-    v6(p12)
-end
-t1.value5(v12, {
-	Name = "Auto Block",
-	Value = false,
-	Callback = t1.value6
-})
-t1.value7 = v12.AddToggle
-function t1.value8(p13)
-    t2.value6 = p13
-end
-t1.value7(v12, {
-	Name = "Anti Block Bait",
-	Value = false,
-	Callback = t1.value8
-})
-function t1.value9(p14)
-    v11(p14)
-end
-v12:AddToggle({
-	Name = "Punch Aimbot",
-	Value = false,
-	Callback = t1.value9
-})
-t1.value10 = t2.value9
-t1.value11 = v12.AddTextbox
-function t1.value12(p15)
-    local num = tonumber(p15)
-    if num then
-        t2.value9 = math.max(0, num)
+
+
+local BlockLeft = Tabs.Block:AddLeftGroupbox("Auto Block", "shield")
+BlockLeft:AddToggle("AutoBlockToggle", { Text = "Auto Block", Default = false, Callback = function(state)
+    v6(state)
+end })
+BlockLeft:AddToggle("AntiBlockBaitToggle", { Text = "Anti Block Bait", Default = false, Callback = function(state)
+    t2.value6 = state
+end })
+BlockLeft:AddToggle("PunchAimbotToggle", { Text = "Punch Aimbot", Default = false, Callback = function(state)
+    v11(state)
+end })
+BlockLeft:AddToggle("HitboxShakeToggle", { Text = "Hitbox Shake", Default = false, Callback = function(state)
+    t2.value14 = state
+end })
+
+local BlockRight = Tabs.Block:AddRightGroupbox("Settings", "sliders")
+BlockRight:AddSlider("RangeDetection", { Text = "Range Detection", Default = t2.value9, Min = 0, Max = 100, Rounding = 0, Callback = function(v)
+    t2.value9 = math.max(0, v)
+end })
+BlockRight:AddSlider("FacingDetection", { Text = "Facing Detection", Default = t2.value17, Min = -1, Max = 1, Rounding = 2, Callback = function(v)
+    t2.value17 = math.clamp(v, -1, 1)
+end })
+BlockRight:AddSlider("HitboxRange", { Text = "Hitbox Range", Default = t2.value15, Min = 0, Max = 50, Rounding = 0, Callback = function(v)
+    t2.value15 = math.max(0, v)
+    setMode(t2.value10)
+end })
+BlockRight:AddSlider("HitboxSpeed", { Text = "Hitbox Speed", Default = t2.value11, Min = 0, Max = 200, Rounding = 0, Callback = function(v)
+    t2.value11 = math.max(0, v)
+end })
+BlockRight:AddSlider("HitboxDuration", { Text = "Hitbox Duration", Default = t2.value12.duration, Min = 0, Max = 5, Rounding = 2, Callback = function(v)
+    t2.value12.duration = math.max(0, v)
+end })
+
+local BlockMethod = Tabs.Block:AddRightGroupbox("Anti Block Bait Method", "list")
+BlockMethod:AddDropdown("AntiBlockBaitMethod", {
+    Text = "Method",
+    Default = "Legit",
+    Values = t2.value13,
+    Callback = function(v)
+        t2.value10 = v
+        setMode(v)
     end
-end
-t1.value11(v12, {
-	Name = "Range Detection",
-	Placeholder = "none",
-	Value = t1.value10,
-	Callback = t1.value12
-})
-t1.value13 = t2.value17
-t1.value14 = v12.AddTextbox
-function t1.value15(p16)
-    local num = tonumber(p16)
-    if num then
-        t2.value17 = math.clamp(num, -1, 1)
-    end
-end
-t1.value14(v12, {
-	Name = "Facing Detection",
-	Placeholder = "none",
-	Value = t1.value13,
-	Callback = t1.value15
-})
-t1.value16 = v12.AddToggle
-function t1.value17(p17)
-    t2.value14 = p17
-end
-t1.value16(v12, {
-	Name = "Hibox Shake",
-	Value = false,
-	Callback = t1.value17
-})
-t1.value18 = t2.value15
-t1.value19 = v12.AddTextbox
-function t1.value20(p18)
-    local num = tonumber(p18)
-    if num then
-        t2.value15 = math.max(0, num)
-        setMode(t2.value10)
-    end
-end
-t1.value19(v12, {
-	Name = "Hitbox Range",
-	Placeholder = "none",
-	Value = t1.value18,
-	Callback = t1.value20
-})
-t1.value21 = v12.AddTextbox
-t1.value22 = t2.value11
-function t1.value23(p19)
-    local num = tonumber(p19)
-    if num then
-        t2.value11 = math.max(0, num)
-    end
-end
-t1.value21(v12, {
-	Name = "Hitbox Speed",
-	Placeholder = "none",
-	Value = t2.value22,
-	Callback = t1.value23
-})
-t1.value24 = t2.value13
-function t1.value25(p20)
-    t2.value10 = p20
-    setMode(p20)
-end
-v12:AddDropdown({
-	Name = "Anti Block Bait Method",
-	Options = t1.value24,
-	Default = "Legit",
-	Callback = t1.value25
-})
-t1.value26 = t2.value12.duration
-t1.value27 = v12.AddTextbox
-function t1.value28(p21)
-    local num = tonumber(p21)
-    if num then
-        t2.value12.duration = math.max(0, num)
-    end
-end
-t1.value27(v12, {
-	Name = "Hitbox Duration",
-	Placeholder = "none",
-	Value = t1.value26,
-	Callback = t1.value28
 })
 
 
