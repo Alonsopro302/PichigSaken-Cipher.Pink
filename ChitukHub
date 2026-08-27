@@ -1330,7 +1330,6 @@ local v4 = unpack or table.unpack
 t2.value1 = game:GetService("Players")
 t2.value2 = game:GetService("ReplicatedStorage")
 t2.value3 = game:GetService("RunService")
-local _ = t2.value2.Modules.Network.Network.RemoteEvent
 t2.value4 = t2.value1.LocalPlayer
 t2.value5 = workspace:WaitForChild("Players"):WaitForChild("Killers")
 t2.value6 = false
@@ -1346,6 +1345,32 @@ t2.value13 = {
 }
 t2.value14 = false
 t2.value15 = 5
+
+local BlockRemote = nil
+local function getBlockRemote()
+    if BlockRemote then return BlockRemote end
+    local success, remote = pcall(function()
+        return t2.value2:WaitForChild("Modules", 10):WaitForChild("Network", 5):WaitForChild("Network", 5):WaitForChild("RemoteEvent", 5)
+    end)
+    if success and remote then
+        BlockRemote = remote
+        return remote
+    end
+    return nil
+end
+
+local function fireBlock()
+    local remote = getBlockRemote()
+    if not remote then return end
+    pcall(function()
+        local args = {
+            "UseActorAbility",
+            { buffer.fromstring("\003\005\000\000\000Block") }
+        }
+        remote:FireServer(v4(args))
+    end)
+end
+
 local function setMode(p1)
     if p1 == t2.value13[2] then
         t2.value14 = true
@@ -1369,7 +1394,7 @@ t2.value16 = {
 	["rbxassetid://96959123077498"] = true,
 	["rbxassetid://72722244508749"] = true
 }
-t2.value17 = nil
+t2.value17 = 0.3
 t2.value18 = {
 	["rbxassetid://102228729296384"] = true,
 	["rbxassetid://140242176732868"] = true,
@@ -1418,7 +1443,7 @@ t2.value18 = {
 t2.value19 = {}
 t2.value20 = nil
 t2.value21 = nil
-t2.value17 = 0.3
+
 function t2.value22(p2)
     if t2.value19[p2] then
         return
@@ -1481,12 +1506,9 @@ function t2.value22(p2)
         end
         if v104 and v105 then
             if not u20 then
-                local RemoteEvent = t2.value2.Modules.Network.Network.RemoteEvent
-                local t3 = { "Block" }
                 u20 = v16.DescendantAdded:Connect(function(descendant)
                     if descendant and descendant:IsA("Sound") and t2.value18[descendant.SoundId] then
-                        RemoteEvent:FireServer("UseActorAbility", t3)
-                        print("Blocked")
+                        fireBlock()
                     end
                 end)
             end
@@ -1496,9 +1518,11 @@ function t2.value22(p2)
         end
     end)
 end
+
 local function v6(p3)
     t2.value7 = p3
     if t2.value7 then
+        getBlockRemote()
         for v26, v27 in ipairs(t2.value5:GetChildren()) do
             task.spawn(t2.value22, v27)
         end
@@ -1530,6 +1554,7 @@ local function v6(p3)
         table.clear(t2.value19)
     end
 end
+
 function t2.value23(p4)
     local Humanoid = p4:WaitForChild("Humanoid", 5)
     if not Humanoid then return end
@@ -1542,6 +1567,7 @@ function t2.value23(p4)
         end
     end)
 end
+
 if t2.value4.Character then
     task.spawn(function()
         t2.value23(t2.value4.Character)
@@ -1550,12 +1576,14 @@ end
 t2.value4.CharacterAdded:Connect(function(character)
     t2.value23(character)
 end)
+
 local function v7(p5)
     if p5 then
         return p5:FindFirstChild("HumanoidRootPart")
     end
     return nil
 end
+
 local Character = t2.value4.Character
 if not Character then
     Character = t2.value4.CharacterAdded:Wait()
@@ -1566,9 +1594,11 @@ t2.value4.CharacterAdded:Connect(function(character)
     t2.value24 = character
     t2.value25 = v7(character)
 end)
+
 local new = Vector3.new
 t2.value26 = nil
 t2.value27 = new(50, 50, 50)
+
 function t2.value28()
     if not t2.value24 then return nil end
     if t2.value24:IsDescendantOf(workspace.Players.Survivors) then
@@ -1576,10 +1606,12 @@ function t2.value28()
     end
     return nil
 end
+
 function t2.value29(p6, p7)
     if not p7 or not p6 then return false end
     return p6:IsDescendantOf(p7)
 end
+
 function t2.value30()
     if not t2.value25 then return nil, math.huge end
     if not t2.value6 then return nil, math.huge end
@@ -1611,6 +1643,7 @@ function t2.value30()
     end
     return v43, huge
 end
+
 t2.value26 = 1
 function t2.value31()
     if not t2.value25 then return end
@@ -1641,6 +1674,7 @@ function t2.value31()
     local v64 = t2.value11 + v56 * 10
     t2.value25.Velocity = Unit * v64 + v63
 end
+
 t2.value32 = true
 t2.value33 = false
 local function mainLoop()
@@ -1679,6 +1713,7 @@ local function mainLoop()
     end)
 end
 mainLoop()
+
 t2.value34 = false
 t2.value35 = nil
 t2.value36 = nil
@@ -1692,6 +1727,7 @@ t2.value37 = {
 	["rbxassetid://138040001965654"] = true,
 	["rbxassetid://86096387000557"] = true
 }
+
 function t2.value38()
     local Character3 = t2.value4.Character
     if not Character3 then return nil end
@@ -1715,11 +1751,13 @@ function t2.value38()
     end
     return v66
 end
+
 function t2.value39(p8)
     local CurrentCamera = workspace.CurrentCamera
     if not CurrentCamera or not p8 then return end
     CurrentCamera.CFrame = CFrame.new(CurrentCamera.CFrame.Position, p8.Position)
 end
+
 local function v10(p9)
     if t2.value35 then
         t2.value35:Disconnect()
@@ -1736,12 +1774,14 @@ local function v10(p9)
         end
     end)
 end
+
 function t2.value40()
     if t2.value35 then
         t2.value35:Disconnect()
         t2.value35 = nil
     end
 end
+
 function t2.value41(p10)
     if not p10 then return end
     local Humanoid = p10:WaitForChild("Humanoid", 5)
@@ -1760,6 +1800,7 @@ function t2.value41(p10)
         end
     end)
 end
+
 t2.value4.CharacterAdded:Connect(function(character)
     t2.value40()
     task.wait(0.2)
@@ -1769,6 +1810,7 @@ if t2.value4.Character then
     task.wait(0.2)
     t2.value41(t2.value4.Character)
 end
+
 local function v11(p11)
     t2.value34 = p11
     if not p11 then
